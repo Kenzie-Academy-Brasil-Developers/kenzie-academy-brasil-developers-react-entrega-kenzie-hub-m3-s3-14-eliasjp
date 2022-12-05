@@ -5,10 +5,23 @@ export const Global = createGlobalStyle`
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        font-family: var(--font-family-inter);
     }
 
     html, body, #root {
         height: 100%;
+    }
+
+    h1, h2, h3, p {
+        color: var(--color-grey-0);
+    }
+
+    small {
+        color: var(--color-grey-1); 
+    }
+
+    label {
+        color: var(--color-grey-0);
     }
 
     :root {
@@ -24,5 +37,7 @@ export const Global = createGlobalStyle`
 
         --color-success: #3FE864;
         --color-negative: #E83F5B;
+
+        --font-family-inter: 'Inter', sans-serif;
     }
 `

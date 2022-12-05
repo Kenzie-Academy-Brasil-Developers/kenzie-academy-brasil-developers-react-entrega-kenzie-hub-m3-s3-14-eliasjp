@@ -43,6 +43,10 @@ export const LoginMain = styled.main`
 `
 
 export const LoginForm = styled.form`
+    h2 {
+        margin-bottom: 20px;
+    }
+
     div {
         display: flex;
         flex-direction: column;

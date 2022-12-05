@@ -1,8 +1,12 @@
+import { useEffect } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { toast ,ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"
 
 import { loginSchema } from "./loginSchema.js"
+import { api } from "../../services/api/api.js";
 
 import { Container } from "../../components/Container/Container";
 import { HeaderTemplate } from "../../components/HeaderTemplate/HeaderTemplate";
@@ -18,9 +22,33 @@ export function Login (){
         resolver: yupResolver(loginSchema)
     })
 
-    const onSubmit = (data) => {
-        console.log(data)
+    const toastConfig = {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        }
+
+    const onSubmit = async (data) => {
+        try {
+            const loginEvent = await api.post("/sessions", data)
+            .then(resp => resp.data)
+            window.localStorage.setItem("user_id", JSON.stringify(loginEvent.user.id))
+            window.localStorage.setItem("@token", JSON.stringify(loginEvent.token))
+            window.location.assign("/")
+        }
+        catch(error) {
+            toast.error (error.response.data.message, toastConfig)
+        }
     }
+
+    useEffect(() => {
+        (window.localStorage.getItem("user_id") && window.localStorage.getItem("@token")) && window.location.assign("/")
+    }, [])
 
     return (
         <LoginContainer>
@@ -46,6 +74,7 @@ export function Login (){
 
             </LoginMain>
         </Container>
+        <ToastContainer />
         </LoginContainer>
     )
 }
