@@ -1,5 +1,10 @@
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
+import { toast ,ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"
+import { Link } from "react-router-dom";
+
+import { api } from "../../services/api/api";
 
 import { InputForm } from "../../components/InputForm/InputForm";
 import { StyledButton } from "../../styles/buttons";
@@ -17,19 +22,44 @@ export function RegisterPage (){
         mode: "onSubmit",
         resolver: yupResolver(registerSchema)
     })
-    const onSubmit = data => console.log(data)
+
+    const toastConfig = {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    }
+
+    const onSubmit = async (data) => {
+        try {
+            await api.post("/users", data, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            toast.success("Cadastrado com sucesso. Você será redirecionado em breve.", toastConfig)
+            setTimeout(() => window.location.assign("Login"), 4000)
+        }
+        catch(error) {
+            toast.error(error.response.data.message, toastConfig)
+        }
+    }
 
     return (
         <RegisterContainer>
             <HeaderTemplate>
-                <StyledButton onClick={() => console.log(`oi`) } type="button" height="medium" color="dark-grey">Voltar</StyledButton>
+                <Link to="/login">Voltar</Link>
             </HeaderTemplate>
             <Container>
                 <RegisterMain>
                     <RegisterForm onSubmit={handleSubmit(onSubmit)} noValidate>
                         <div>
                             <h2>Crie sua conta</h2>
-                            <p>Rapido e grátis, vamos nessa</p>
+                            <small>Rapido e grátis, vamos nessa</small>
                         </div>
 
                         <StyledFieldset>
@@ -61,10 +91,11 @@ export function RegisterPage (){
 
                         </StyledFieldset>
 
-                        <StyledButton type="submit" height="default" disabled={false}>Teste</StyledButton>
+                        <StyledButton type="submit" height="default" disabled={false}>Cadastrar</StyledButton>
                     </RegisterForm>
                 </RegisterMain>
             </Container>
+            <ToastContainer />
         </RegisterContainer>
     )
 }

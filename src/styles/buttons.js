@@ -16,8 +16,6 @@ function typeSubmit (props){
     }
 }
 
-// teste ? { return `background: var(--color-primary); cursor: pointer;` }
-
 function typeButton (props){
     if (props.color === "dark-grey"){
         return (`
