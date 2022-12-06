@@ -58,10 +58,10 @@ export function Login (){
                 <LoginForm onSubmit={handleSubmit(onSubmit)}>
                     <h2>Login</h2>
                     <StyledFieldset>
-                        <InputForm labelName="Email" inputType="email" placeholder="Digite seu email" toForm={register("email")}/>
+                        <InputForm labelName="Email" inputType="email" text="Digite seu email" toForm={register("email")}/>
                         { errors.email && <span>{ errors.email.message }</span> }
 
-                        <InputForm labelName="Senha" inputType="password" placeholder="Digite sua senha" toForm={register("password")}/>
+                        <InputForm labelName="Senha" inputType="password" text="Digite sua senha" toForm={register("password")}/>
                         { errors.password && <span>{ errors.password.message }</span> }
 
                     </StyledFieldset>
