@@ -37,7 +37,7 @@ export const LoginMain = styled.main`
     }
 
     @media (min-width: 1024px){
-        width: 700px;
+        width: 380px;
         margin: 0 auto;
     }
 `
