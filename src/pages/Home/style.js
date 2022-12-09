@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const HomeContainer = styled.div`
-    height: 100%;
+    min-height: 100%;
     background-color: var(--color-grey-4);
 `
 
