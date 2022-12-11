@@ -14,8 +14,16 @@ export function LoginProvider ({ children }){
         api.defaults.headers.common["Client-ID"] = "r6rmfu6jsapswq3zklnkhbfae1r6xv"
     }
 
+    async function registerEvent (data){
+        await api.post("/users", data, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+    }
+
     return (
-        <LoginContext.Provider value={{ login }}>
+        <LoginContext.Provider value={{ login, registerEvent }}>
             { children }
         </LoginContext.Provider>
     )

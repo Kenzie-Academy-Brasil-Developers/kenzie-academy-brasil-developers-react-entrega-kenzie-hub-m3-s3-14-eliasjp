@@ -9,7 +9,7 @@ import { TechContainer } from "../../components/TechsContainer/TechContainer.jsx
 import { ModalProvider } from "../../context/ModalContext/ModalContext"
 import { NewTech } from "../../components/NewTech/NewTech.jsx"
 
-export function Home ({ userTechs }){
+export function Home ({ userTechs, setUserTechs }){
     const userId = JSON.parse(window.localStorage.getItem("user_id"))
     const userToken = JSON.parse(window.localStorage.getItem("@token"))
 
