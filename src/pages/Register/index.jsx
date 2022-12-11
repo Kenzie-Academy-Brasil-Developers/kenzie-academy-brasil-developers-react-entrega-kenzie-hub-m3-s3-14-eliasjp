@@ -1,10 +1,9 @@
+import { useContext } from "react";
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { toast ,ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
 import { Link, useNavigate } from "react-router-dom";
-
-import { api } from "../../services/api/api";
 
 import { InputForm } from "../../components/InputForm/InputForm";
 import { StyledButton } from "../../styles/buttons";
@@ -17,12 +16,15 @@ import { Container } from "../../components/Container/Container.jsx";
 import { StyledFieldset } from "../../styles/fieldset.js"
 import { registerSchema } from "./registerSchema";
 
+import { LoginContext } from "../../context/LoginContext/LoginContext";
+
 export function RegisterPage (){
     const { register, handleSubmit, formState: { errors } } = useForm({
         mode: "onSubmit",
         resolver: yupResolver(registerSchema)
     })
 
+    const { registerEvent } = useContext(LoginContext)
     const navigate = useNavigate()
 
     const toastConfig = {
@@ -38,11 +40,7 @@ export function RegisterPage (){
 
     const onSubmit = async (data) => {
         try {
-            await api.post("/users", data, {
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
+            registerEvent (data)
             toast.success("Cadastrado com sucesso. Você será redirecionado em breve.", toastConfig)
             setTimeout(() => navigate("/login"), 4000)
         }
