@@ -3,12 +3,13 @@ import { useForm } from "react-hook-form"
 import { useContext } from "react"
 
 import { ModalContext } from "../../context/ModalContext/ModalContext"
+import { api } from "../../services/api/api.js"
 
 import { StyledModalContent } from "./StyledModalContent"
 import { SelectForm } from "../SelectForm/SelectForm"
 import { StyledButton } from "../../styles/buttons"
 
-export function EditTechModal (){
+export function EditTechModal ({ tech }){
     const modalStyle = {
         content: {
             top: '50%',
@@ -30,7 +31,11 @@ export function EditTechModal (){
     const { openModal, hideModal } = useContext(ModalContext)
     
     function techEdit (data){
-        console.log(data)
+        api.put(`users/techs/${tech.id}`, data, {
+            headers: {
+                Authorization: `Bearer ${JSON.parse(window.localStorage.getItem("@token"))}`   
+            }
+        })
         hideModal ()
     }
 

@@ -10,7 +10,7 @@ export function TechCard ({ tech }){
     function callModal (){
         setTriggerModal(true)
         setIsOpen(true)
-        setModalContent(<EditTechModal />)
+        setModalContent(<EditTechModal tech={ tech }/>)
     }
 
     return (

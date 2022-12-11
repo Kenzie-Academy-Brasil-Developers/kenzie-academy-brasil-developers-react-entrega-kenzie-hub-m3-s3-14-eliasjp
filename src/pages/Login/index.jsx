@@ -1,12 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast ,ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
 
 import { loginSchema } from "./loginSchema.js"
-import { api } from "../../services/api/api.js";
 
 import { Container } from "../../components/Container/Container";
 import { HeaderTemplate } from "../../components/HeaderTemplate/HeaderTemplate";
@@ -14,6 +13,7 @@ import { InputForm } from "../../components/InputForm/InputForm";
 import { StyledButton } from "../../styles/buttons";
 import { StyledFieldset } from "../../styles/fieldset";
 import { LoginMain, LoginContainer, LoginForm } from "./style";
+import { LoginContext } from "../../context/LoginContext/LoginContext.jsx";
 
 
 export function Login (){
@@ -21,6 +21,9 @@ export function Login (){
         mode: "onSubmit",
         resolver: yupResolver(loginSchema)
     })
+
+    const { login } = useContext(LoginContext)
+    const navigate = useNavigate()
 
     const toastConfig = {
             position: "bottom-right",
@@ -35,11 +38,8 @@ export function Login (){
 
     const onSubmit = async (data) => {
         try {
-            const loginEvent = await api.post("/sessions", data)
-            .then(resp => resp.data)
-            window.localStorage.setItem("user_id", JSON.stringify(loginEvent.user.id))
-            window.localStorage.setItem("@token", JSON.stringify(loginEvent.token))
-            window.location.assign("/")
+            await login(data)
+            navigate("/")
         }
         catch(error) {
             toast.error (error.response.data.message, toastConfig)
@@ -67,7 +67,6 @@ export function Login (){
                     </StyledFieldset>
 
                     <StyledButton type="submit" height="default" disabled={false}>Login</StyledButton>
-                    
                 </LoginForm>
                     <p>Ainda não possui uma conta?</p>
                     <Link to="/register">Cadastre-se</Link>

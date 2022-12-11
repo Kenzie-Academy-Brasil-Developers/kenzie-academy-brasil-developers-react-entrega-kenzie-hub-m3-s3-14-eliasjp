@@ -2,6 +2,7 @@ import { useContext } from "react"
 import { useForm } from "react-hook-form"
 import Modal from "react-modal"
 
+import { api } from "../../services/api/api.js"
 import { InputForm } from "../InputForm/InputForm.jsx"
 import { SelectForm } from "../SelectForm/SelectForm.jsx"
 
@@ -28,12 +29,19 @@ export function NewTechModal (){
           }
     }
 
+    const token = window.localStorage.getItem("@token")
+
     const { openModal, hideModal } = useContext(ModalContext)
 
     const { register, handleSubmit } = useForm()
 
-    function teste(data) {
-        console.log(data)
+    function postNewTech(data) {
+        api.post(`/users/techs`, data, {
+            headers: {
+                Authorization: `Bearer ${JSON.parse(token)}`   
+            }
+        })
+        hideModal ()
     }
 
     return (
@@ -43,12 +51,12 @@ export function NewTechModal (){
                     <h3>Cadastrar tecnologia</h3>
                     <button className="closeModalButton" onClick={() => hideModal ()}>X</button>
                 </div>
-                <NewTechForm onSubmit={handleSubmit(teste)}>
+                <NewTechForm onSubmit={handleSubmit(postNewTech)}>
                     <InputForm labelName="Nome" type="text" text="Tecnologia" toForm={register("title")}/>
-                    <SelectForm>
-                        <option>Iniciante</option>
-                        <option>Intermediário</option>
-                        <option>Avançado</option>
+                    <SelectForm labelName="Status" toForm={register("status")}>
+                        <option value="Iniciante">Iniciante</option>
+                        <option value="Intermediário">Intermediário</option>
+                        <option value="Avançado">Avançado</option>
                     </SelectForm>
                     <StyledButton type="submit" height="default" disabled={ false }>Criar</StyledButton>
                 </NewTechForm>

@@ -9,12 +9,11 @@ import { TechContainer } from "../../components/TechsContainer/TechContainer.jsx
 import { ModalProvider } from "../../context/ModalContext/ModalContext"
 import { NewTech } from "../../components/NewTech/NewTech.jsx"
 
-export function Home (){
+export function Home ({ userTechs }){
     const userId = JSON.parse(window.localStorage.getItem("user_id"))
     const userToken = JSON.parse(window.localStorage.getItem("@token"))
 
     const [userData, setUserData] = useState({})
-    const [userTechs, setUserTechs] = useState([])
     const [showModal, setShowModal ] = useState(false)
 
     useEffect(() => {
