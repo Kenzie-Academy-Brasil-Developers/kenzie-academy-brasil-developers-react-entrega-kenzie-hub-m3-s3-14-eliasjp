@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { toast ,ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { api } from "../../services/api/api";
 
@@ -23,6 +23,8 @@ export function RegisterPage (){
         resolver: yupResolver(registerSchema)
     })
 
+    const navigate = useNavigate()
+
     const toastConfig = {
         position: "bottom-right",
         autoClose: 3000,
@@ -42,7 +44,7 @@ export function RegisterPage (){
                 }
             })
             toast.success("Cadastrado com sucesso. Você será redirecionado em breve.", toastConfig)
-            setTimeout(() => window.location.assign("Login"), 4000)
+            setTimeout(() => navigate("/login"), 4000)
         }
         catch(error) {
             toast.error(error.response.data.message, toastConfig)
