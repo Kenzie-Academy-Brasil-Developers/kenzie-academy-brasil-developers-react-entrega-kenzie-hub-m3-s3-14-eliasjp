@@ -4,8 +4,8 @@ import { NewTechModal } from "../NewTechModal/NewTechModal"
 import { NewTechContainer } from "./style"
 
 
-export function NewTech ({ userTechs, setUserTechs }){
-    const { setShowModal, setIsOpen, triggerModal, setTriggerModal, setModalContent } = useContext(ModalContext)
+export function NewTech (){
+    const { setIsOpen, setTriggerModal, setModalContent } = useContext(ModalContext)
 
     function teste (){
         setTriggerModal(true)

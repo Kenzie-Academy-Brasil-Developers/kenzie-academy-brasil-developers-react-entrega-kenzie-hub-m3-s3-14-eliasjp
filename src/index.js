@@ -5,6 +5,7 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom"
 import { Global } from "./styles/global.js";
 import { LoginProvider } from "./context/LoginContext/LoginContext";
+import { PostProvider } from "./context/PostContext/PostContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -12,7 +13,9 @@ root.render(
     <Global />
     <BrowserRouter>
       <LoginProvider>
-        <App />
+        <PostProvider>
+          <App />
+        </PostProvider>
       </LoginProvider>
     </BrowserRouter>
   </React.StrictMode>

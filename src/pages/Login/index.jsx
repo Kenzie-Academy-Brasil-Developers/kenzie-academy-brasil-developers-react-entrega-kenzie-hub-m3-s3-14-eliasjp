@@ -1,7 +1,7 @@
 import { useEffect, useContext } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { toast ,ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
 
@@ -23,7 +23,7 @@ export function Login (){
     })
 
     const { login } = useContext(LoginContext)
-    const navigate = useNavigate()
+    const { navigate } = useContext(LoginContext)
 
     const toastConfig = {
             position: "bottom-right",
@@ -47,7 +47,7 @@ export function Login (){
     }
 
     useEffect(() => {
-        (window.localStorage.getItem("user_id") && window.localStorage.getItem("@token")) && window.location.assign("/")
+        (window.localStorage.getItem("user_id") && window.localStorage.getItem("@token")) && navigate("/")
     }, [])
 
     return (
