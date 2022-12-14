@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext } from "react";
 
 import { ModalContext } from "../../context/ModalContext/ModalContext.jsx";
 import { EditTechModal } from "../TechModal/EditTechModal.jsx";

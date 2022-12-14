@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form"
 import { useContext } from "react"
 
 import { ModalContext } from "../../context/ModalContext/ModalContext"
+import { PostContext } from "../../context/PostContext/PostContext"
 import { api } from "../../services/api/api.js"
 
 import { StyledModalContent } from "./StyledModalContent"
@@ -28,15 +29,19 @@ export function EditTechModal ({ tech }){
           }
     }
 
+    const { refreshTechs } = useContext(PostContext)
     const { openModal, hideModal } = useContext(ModalContext)
     
-    function techEdit (data){
-        api.put(`users/techs/${tech.id}`, data, {
-            headers: {
-                Authorization: `Bearer ${JSON.parse(window.localStorage.getItem("@token"))}`   
-            }
-        })
+    async function techEdit (data){
+        await api.put(`users/techs/${tech.id}`, data)
+        refreshTechs()
         hideModal ()
+    }
+
+    async function techDelete (){
+        await api.delete(`/users/techs/${tech.id}`)
+        refreshTechs()
+        hideModal()
     }
 
     const { register, handleSubmit, formState: { errors } } = useForm()
@@ -56,7 +61,7 @@ export function EditTechModal ({ tech }){
                     </SelectForm>
                     <section>
                         <StyledButton type="submit" height="default" color="" disabled={ false }>Salvar alterações</StyledButton>
-                        <StyledButton type="button" height="default">Excluir</StyledButton>
+                        <StyledButton type="button" height="default" onClick={() => techDelete()}>Excluir</StyledButton>
                     </section>
                 </form>
             </StyledModalContent>

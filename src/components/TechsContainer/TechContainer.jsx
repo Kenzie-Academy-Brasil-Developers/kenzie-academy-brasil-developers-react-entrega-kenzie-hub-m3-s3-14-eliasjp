@@ -1,7 +1,11 @@
+import { useContext } from "react"
+import { PostContext } from "../../context/PostContext/PostContext"
 import { TechCard } from "../TechCard/TechCard"
 import { TechList } from "./style"
 
-export function TechContainer ({ userTechs, setShowModal }){
+export function TechContainer ({ setShowModal }){
+    const { userTechs } = useContext(PostContext)
+
     function renderTechs (){
         return userTechs.map((tech) => {
             return <TechCard tech={ tech } key={ tech.id } setShowModal={ setShowModal } />

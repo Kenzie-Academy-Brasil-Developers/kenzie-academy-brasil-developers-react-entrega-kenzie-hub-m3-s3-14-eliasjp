@@ -2,11 +2,13 @@ import { useContext } from "react"
 import { useForm } from "react-hook-form"
 import Modal from "react-modal"
 
+import { PostContext } from "../../context/PostContext/PostContext.jsx"
+import { ModalContext } from "../../context/ModalContext/ModalContext"
+
 import { api } from "../../services/api/api.js"
 import { InputForm } from "../InputForm/InputForm.jsx"
 import { SelectForm } from "../SelectForm/SelectForm.jsx"
 
-import { ModalContext } from "../../context/ModalContext/ModalContext"
 import { NewTechForm, NewTechModalContent } from "./style"
 import { StyledButton } from "../../styles/buttons"
 
@@ -29,18 +31,15 @@ export function NewTechModal (){
           }
     }
 
-    const token = window.localStorage.getItem("@token")
+    const { refreshTechs } = useContext(PostContext)
 
     const { openModal, hideModal } = useContext(ModalContext)
 
     const { register, handleSubmit } = useForm()
 
-    function postNewTech(data) {
-        api.post(`/users/techs`, data, {
-            headers: {
-                Authorization: `Bearer ${JSON.parse(token)}`   
-            }
-        })
+    async function postNewTech(data) {
+        await api.post(`/users/techs`, data)
+        refreshTechs()
         hideModal ()
     }
 

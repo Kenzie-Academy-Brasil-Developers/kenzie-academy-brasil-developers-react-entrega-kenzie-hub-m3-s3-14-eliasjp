@@ -1,31 +1,25 @@
-import { useEffect, useState } from "react"
-import { api } from "../../services/api/api"
+import { useEffect, useState, useContext } from "react"
+
+import { LoginContext } from "../../context/LoginContext/LoginContext"
 
 import { HomeContainer, HomeMain, UserIntruduction } from "./style"
 
 import { HeaderTemplate } from "../../components/HeaderTemplate/HeaderTemplate"
 import { StyledButton } from "../../styles/buttons"
 import { TechContainer } from "../../components/TechsContainer/TechContainer.jsx"
-import { ModalProvider } from "../../context/ModalContext/ModalContext"
+import { ModalProvider } from "../../context/ModalContext/ModalContext.jsx"
+import { PostContext } from "../../context/PostContext/PostContext.jsx"
 import { NewTech } from "../../components/NewTech/NewTech.jsx"
 
-export function Home ({ userTechs, setUserTechs }){
-    const userId = JSON.parse(window.localStorage.getItem("user_id"))
-    const userToken = JSON.parse(window.localStorage.getItem("@token"))
-
-    const [userData, setUserData] = useState({})
+export function Home (){
     const [showModal, setShowModal ] = useState(false)
 
+    const { navigate, setHeaders, userData } = useContext(LoginContext)
+    const { userTechs, setUserTechs } = useContext(PostContext)
+
     useEffect(() => {
-        function checkStorage (){
-            (!userId || !userToken) && window.location.assign("/login")
-        }
-
-        checkStorage ()
-
         async function setData (){
-            const user = await api.get(`/users/${userId}`)
-            setUserData(user.data)
+            const user = await setHeaders ()
             setUserTechs(user.data.techs)
         }
         
@@ -35,7 +29,7 @@ export function Home ({ userTechs, setUserTechs }){
     function clearStorage (){
         window.localStorage.removeItem("user_id")
         window.localStorage.removeItem("@token")
-        window.location.assign("/Login")
+        navigate("/Login")
     }
 
     function renderModal (){
@@ -55,13 +49,13 @@ export function Home ({ userTechs, setUserTechs }){
                 </section>
             </UserIntruduction>
 
-            <ModalProvider showModal={ showModal } setShowModal={ setShowModal }>
-                <HomeMain>
-                    <NewTech userTechs={ userTechs } setUserTechs={ setUserTechs}/>
-                    <TechContainer userTechs={ userTechs } />
-                </HomeMain>
-                { renderModal () }
-            </ModalProvider>
+                <ModalProvider showModal={ showModal } setShowModal={ setShowModal }>
+                    <HomeMain>
+                        <NewTech userTechs={ userTechs } setUserTechs={ setUserTechs}/>
+                        <TechContainer userTechs={ userTechs } />
+                    </HomeMain>
+                    { renderModal () }
+                </ModalProvider>
         </HomeContainer>
     )
 }
