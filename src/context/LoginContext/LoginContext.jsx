@@ -22,14 +22,20 @@ export function LoginProvider ({ children }){
     }
 
     async function setData (idUser){
-        const user = await api.get(`/users/${idUser}`)
-        setUserData(user.data)
-        return user
+        try {
+            const user = await api.get(`/users/${idUser}`)
+            setUserData(user.data)
+            return user
+        }
+        catch {
+            navigate("/login")
+        }
     }
 
     async function setHeaders (){
         const id = JSON.parse(window.localStorage.getItem("user_id"))
         const token = JSON.parse(window.localStorage.getItem("@token"))
+
         try {
             api.defaults.headers.common["Authorization"] = `Bearer ${token}`
             api.defaults.headers.common["Client-ID"] = "r6rmfu6jsapswq3zklnkhbfae1r6xv"
